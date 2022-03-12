@@ -1,0 +1,60 @@
+from collections import Counter
+def tooth_picks(stage, top_left_corner, bottom_right_corner):
+    a, b = top_left_corner
+    c, d = bottom_right_corner   
+    last_tip_point = [(0, 0)] 
+    black_blocks = []
+    final_black_blocks=[]
+    for i in range(stage + 1): 
+        start_tip_point = last_tip_point 
+        new_tip_point = []
+        for tip_x, tip_y in start_tip_point:        
+            if i % 2 != 0: 
+                #
+                a1 = tip_x - 2
+                a2 = tip_x - 1
+                a3 = tip_x
+                a4 = tip_x + 1
+                a5 = tip_x + 2  
+                #
+                if (a1, tip_y) not in final_black_blocks:
+                    new_tip_point.append((a1, tip_y))
+                if (a5, tip_y) not in final_black_blocks:
+                    new_tip_point.append((a5, tip_y)) 
+                x= [a1, a2, a3, a4, a5]
+                for m in range(5):
+                    black_blocks.append((x[m],tip_y))            
+            else:  
+                #
+                b1 = tip_y - 2
+                b2 = tip_y - 1
+                b3 = tip_y
+                b4 = tip_y + 1
+                b5 = tip_y + 2
+                #
+                if (tip_x, b1) not in final_black_blocks:
+                    new_tip_point.append((tip_x, b1))
+                if (tip_x, b5) not in final_black_blocks:
+                    new_tip_point.append((tip_x, b5))
+                y = [b1, b2, b3, b4, b5]
+                for m in range(5):
+                    black_blocks.append((tip_x, y[m]))               
+        counter = Counter(new_tip_point)
+        #
+        last_tip_point = []
+        for key, value in counter.items():
+            if value == 1:
+                last_tip_point.append(key)
+        # modify: last_tip_point = [key for key, value in counter.items() if value == 1]
+        final_black_blocks.extend(black_blocks)
+    n2 = b 
+    while n2 >= d:
+        n1 = a  
+        while n1 <= c:
+            if (n1,n2) in final_black_blocks:
+                print('⬛', end='')
+            else:
+                print('⬜', end='')
+            n1+=1
+        print() 
+        n2-=1  
