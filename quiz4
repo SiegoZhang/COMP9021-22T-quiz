@@ -1,0 +1,53 @@
+import datetime
+start = datetime.datetime.now()
+from math import sqrt
+def sieve_of_primes_up_to(n):
+    sieve = [True] * (n // 2 + 1)
+    for p in range(2, round(sqrt(n // 2)) + 1)
+        if sieve[p]:
+            for i in range(p * p, n // 2 + 1, p):
+                sieve[i] = False
+    return sieve
+def tri_numbers(n):
+    prime_number = sieve_of_primes_up_to(n)  
+    dic = {}
+    trinumber = {}
+    m = 0
+    for a in range(2, n//4+1):  
+        if prime_number[a]:
+            first_number = a
+            if first_number * first_number * first_number > n:
+                break
+            for b in range(a, n//4+1): 
+                if prime_number[b]:
+                    second_number = b
+                    if first_number * second_number * second_number > n:
+                        break
+                    for c in range(b, n//4+1): 
+                        if prime_number[c]:
+                            third_number = c
+                            if first_number * second_number * third_number > n:
+                                break
+                            m += 1
+                                
+                            trinumber[first_number * second_number * third_number] = (first_number, second_number, third_number)                                
+                            gap = min(third_number - second_number, second_number - first_number)                              
+                            dic[(first_number, second_number, third_number)] = gap
+
+    max_gap = max(dic.values())
+    max_trinumber = max(trinumber.keys())
+    if m > 1:
+        print('There is', m, 'trinumbers at most equal to', n, '.', sep='')
+    else:
+        print('There is', m, 'trinumber at most equal to', n, '.', sep='')
+    q, w, e = trinumber[max_trinumber]
+    print('The largest one is ', max_trinumber, ', equal to ', q, ' x ', w, ' x ', e, '.', sep='')
+    print()
+    print('The maximum gap in decompositions is ', max_gap,'.', sep='')
+    print('It is achieved with:')
+    for a, value in dic.items():
+        if value == max_gap:
+            print(' ', a[0] * a[1] * a[2], ' = ', a[0], ' x ', a[1], ' x ', a[2])
+tri_numbers(50000000)
+end = datetime.datetime.now()
+print(end-start)
